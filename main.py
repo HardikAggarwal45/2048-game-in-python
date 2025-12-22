@@ -119,7 +119,6 @@ def move_right(event = None):
     for i in range(4):
         game_state[i][0], game_state[i][3] = game_state[i][3], game_state[i][0]
         game_state[i][1], game_state[i][2] = game_state[i][2], game_state[i][1]
-    add_random()
     draw_board()
 
 def move_up(event = None):
@@ -129,7 +128,6 @@ def move_up(event = None):
     transpose()
     move_left()
     transpose()
-    add_random()
     draw_board()
 
 def move_down(event = None):
@@ -139,7 +137,6 @@ def move_down(event = None):
     transpose()
     move_right()
     transpose()
-    add_random()
     draw_board()
 
 def draw_board():
