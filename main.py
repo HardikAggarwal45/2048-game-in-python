@@ -51,11 +51,8 @@ def add_random():
     sample = [2,2,2,2,2,4]
     s = random.choice(sample)
     game_state[r][c] = s
-    
-def move_left(event = None):
-    global game_over
-    if (game_over):
-        return
+
+def execute():
     for i in range(4):
         L = game_state[i]
         L1=[]
@@ -105,6 +102,21 @@ def move_left(event = None):
                 L1[2]=2*L1[2]
                 L1[3]=0
         game_state[i] = L1
+
+def move_left(event = None):
+    global game_over
+    if (game_over):
+        return
+    temp = [[0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0]]
+    for i in range(4):
+        for j in range(4):
+            temp[i][j] = game_state[i][j]
+    execute()
+    if temp==game_state:
+        return
     add_random()
     draw_board()
 
@@ -112,31 +124,67 @@ def move_right(event = None):
     global game_over
     if (game_over):
         return
+    temp = [[0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0]]
+    for i in range(4):
+        for j in range(4):
+            temp[i][j] = game_state[i][j]
     for i in range(4):
         game_state[i][0], game_state[i][3] = game_state[i][3], game_state[i][0]
         game_state[i][1], game_state[i][2] = game_state[i][2], game_state[i][1]
-    move_left()
+    execute()
     for i in range(4):
         game_state[i][0], game_state[i][3] = game_state[i][3], game_state[i][0]
         game_state[i][1], game_state[i][2] = game_state[i][2], game_state[i][1]
+    if temp==game_state:
+        return
+    add_random()
     draw_board()
 
 def move_up(event = None):
     global game_over
     if (game_over):
         return
+    temp = [[0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0]]
+    for i in range(4):
+        for j in range(4):
+            temp[i][j] = game_state[i][j]
     transpose()
-    move_left()
+    execute()
     transpose()
+    if temp==game_state:
+        return
+    add_random()
     draw_board()
 
 def move_down(event = None):
     global game_over
     if (game_over):
         return
+    temp = [[0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0],
+            [0,0,0,0]]
+    for i in range(4):
+        for j in range(4):
+            temp[i][j] = game_state[i][j]
     transpose()
-    move_right()
+    for i in range(4):
+        game_state[i][0], game_state[i][3] = game_state[i][3], game_state[i][0]
+        game_state[i][1], game_state[i][2] = game_state[i][2], game_state[i][1]
+    execute()
+    for i in range(4):
+        game_state[i][0], game_state[i][3] = game_state[i][3], game_state[i][0]
+        game_state[i][1], game_state[i][2] = game_state[i][2], game_state[i][1]
     transpose()
+    if temp==game_state:
+        return
+    add_random()
     draw_board()
 
 def draw_board():
@@ -144,11 +192,11 @@ def draw_board():
         for j in range(4):
             if (game_state[i][j]!=0):
                 board[i][j].config(text = game_state[i][j], 
-                               background = back_color[game_state[i][j]],
+                            background = back_color[game_state[i][j]],
                             foreground = text_color[(game_state[i][j]%8)])
             else:
                 board[i][j].config(text = "", 
-                               background = back_color[0])
+                            background = back_color[0])
     is_game_over()
 
 # Tile Background Colors
@@ -187,8 +235,7 @@ window.bind("<Left>", move_left)
 window.bind("<Right>", move_right)
 
 # making frame
-frame = tkinter.Frame(window)
-
+frame = tkinter.Frame(window, bg="#bbada0", bd=2)
 
 # initializing board and game_state
 board = [[0,0,0,0],
@@ -210,13 +257,13 @@ for row in range (4):
                                         font=("Consolas", 50, "bold"),
                                         background = back_color[0],
                                         width=3, height=1)
-        board[row][column].grid(row = row, column=column)
+        board[row][column].grid(row=row, column=column, padx=5, pady=5)
 new_game()
 
 # restart button
 button = tkinter.Button(frame, text="restart", font = ("Consolas", 20), background=back_color[0],
                         foreground="white", command=new_game)
-button.grid(row=5, column=0, columnspan=4, sticky = "we")
+button.grid(row=5, column=0, columnspan=4, sticky="we", padx=5, pady=5)
 
 
 
