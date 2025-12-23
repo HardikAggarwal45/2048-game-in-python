@@ -2,6 +2,8 @@
 
 A lightweight, logic-driven implementation of the classic 2048 game using Python's Tkinter library.
 
+![Game Screenshot](screenshot.png)
+
 ## 📝 Project Overview
 This project is a desktop application that clones the popular 2048 puzzle mechanics. It focuses on clean GUI design and robust state management. Built as a deep dive into 2D matrix manipulation and event-driven programming.
 
