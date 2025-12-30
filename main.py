@@ -190,13 +190,23 @@ def move_down(event = None):
 def draw_board():
     for i in range(4):
         for j in range(4):
-            if (game_state[i][j]!=0):
-                board[i][j].config(text = game_state[i][j], 
-                            background = back_color[game_state[i][j]],
-                            foreground = text_color[(game_state[i][j]%8)])
+            curr_num = game_state[i][j]
+            if curr_num != 0:
+                # Adjust font size based on number length
+                if curr_num > 999:
+                    current_font = ("Consolas", 37, "bold")
+                elif curr_num > 99:
+                    current_font = ("Consolas", 42, "bold")
+                else:
+                    current_font = ("Consolas", 50, "bold")
+                
+                board[i][j].config(text=curr_num,
+                                   font=current_font,
+                                   background=back_color[curr_num],
+                                   foreground=text_color.get(curr_num % 8, "#f9f6f2"))
             else:
-                board[i][j].config(text = "", 
-                            background = back_color[0])
+                board[i][j].config(text="",
+                                   background=back_color[0])
     is_game_over()
 
 # Tile Background Colors
@@ -251,13 +261,24 @@ game_state = [[2,0,0,0],
 game_over = False
 game_2048 = False
 
-for row in range (4):
+
+for row in range(4):
     for column in range(4):
-        board[row][column] = tkinter.Label(frame, text = "",
-                                        font=("Consolas", 50, "bold"),
-                                        background = back_color[0],
-                                        width=3, height=1)
-        board[row][column].grid(row=row, column=column, padx=5, pady=5)
+        cell_frame = tkinter.Frame(frame, width=115, height=105, bg=back_color[0])
+        cell_frame.grid(row=row, column=column, padx=5, pady=5)
+        
+        cell_frame.pack_propagate(False)
+        
+        lbl = tkinter.Label(cell_frame, text="",
+                            font=("Consolas", 50, "bold"),
+                            background=back_color[0],
+                            width=3, height=1)
+        
+        lbl.pack(expand=True, fill="both")
+        
+        board[row][column] = lbl
+
+
 new_game()
 
 # restart button
